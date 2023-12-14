@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: postgres
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      volumes:
+      - name: postgres-data
+      containers:
+      - image: postgres:16.1
+        name: postgres
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: demo
+        - name: POSTGRES_PASSWORD
+          value: secret
+        - name: POSTGRES_USER
+          value: admin
+        resources: {}
